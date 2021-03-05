@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<launch>
+    <param name="robot_description" textfile="$(find onur_bot)/urdf/custom_bot.urdf"/>
+    <include file="$(find gazebo_ros)/launch/empty_world.launch" />
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"
+        args="-param robot_description -urdf -model custom_bot"/>
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" />
+    <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard"/>
+    <node pkg="rviz" type="rviz" name="rviz"/>
+    
+    <node pkg="gmapping" type="slam_gmapping" name="gmappipping">
+        <param name="base_frame" value="base_link"/> <!--bak güzel kardeşim burası bir nevi base_link yani temel baz alınacak yer-->
+        <param name="odom_frame" value="odom"/> <!-- burası ise  odom frame kısmı anlamadım gibi gibi-->
+        <param name="delta" value="0.1"/> <!-- burası ise resolution kısmı-->
+    </node>
+
+    <node pkg="move_base" type="move_base" name="screen">
+        <param name="controller_frequency" value="10.0"/>
+        <rosparam file="$(find onur_bot)/config/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find onur_bot)/config/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find onur_bot)/config/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find onur_bot)/config/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find onur_bot)/config/trajectory_planner.yaml" command="load" />
+    </node>
+
+</launch>    

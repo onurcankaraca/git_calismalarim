@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "browse": {
+        "databaseFilename": "",
+        "limitSymbolsToIncludedHeaders": true
+      },
+      "includePath": [
+        "/home/onurcan/catkin_ws/devel/include/**",
+        "/opt/ros/melodic/include/**",
+        "/home/onurcan/catkin_ws/src/ilk_paket/include/**",
+        "/home/onurcan/catkin_ws/src/opencv_uygulamalar/include/**",
+        "/home/onurcan/catkin_ws/src/turtlebot3_simulations/turtlebot3_fake/include/**",
+        "/home/onurcan/catkin_ws/src/turtlebot3_simulations/turtlebot3_gazebo/include/**",
+        "/home/onurcan/catkin_ws/src/turtlebot3/turtlebot3_slam/include/**",
+        "/usr/include/**"
+      ],
+      "name": "ROS"
+    }
+  ],
+  "version": 4
+}

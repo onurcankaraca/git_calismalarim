@@ -1,0 +1,100 @@
+<?xml version="1.0"?>
+<robot name="revolt" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    
+
+    <xacro:macro name="base" params="name position_of_joint_from_parent_rpy  position_of_joint_from_parent_xyz mass parent scale body_to_joint_xyz body_to_joint_rpy meshfile color">
+        <link name="${name}">
+            <inertial>
+                <mass value="${mass}" />
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <inertia ixx="1" ixy="0.0" ixz="0" iyy="1" iyz="0" izz="1" />
+            </inertial>
+            <visual>
+                <origin xyz="${body_to_joint_xyz}" rpy="${body_to_joint_rpy}" />
+                <geometry>
+                    <mesh filename="${meshfile}" scale="${scale}"/>
+                </geometry>
+                <material name="${color}" >
+                </material>
+            </visual>
+            <collision>
+                <origin xyz="${body_to_joint_xyz}" rpy="${body_to_joint_rpy}" />
+                <geometry>
+                    <mesh filename="${meshfile}" scale="${scale}"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="${name}_joint" type="fixed">
+            <parent link="${parent}_link"/>
+            <child link="${name}"/>
+            <origin xyz="${position_of_joint_from_parent_xyz}" rpy="${position_of_joint_from_parent_rpy}"/>
+        </joint>
+    </xacro:macro> 
+
+
+    <xacro:macro name= "teker" params="name position_of_joint_from_parent_rpy position_of_joint_from_parent_xyz mass parent scale body_to_joint_xyz body_to_joint_rpy meshfile color cap kalinlik">
+        <link name="${name}">
+            <inertial>
+                <mass value="${mass}"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/>
+            </inertial>
+            <visual>
+                <origin rpy="${body_to_joint_rpy}" xyz="${body_to_joint_xyz}"/>
+                <geometry>
+                    <mesh filename="${meshfile}" scale="${scale}"/>
+                </geometry>
+                <material name="${color}"/>
+            </visual>
+            <collision>
+                <origin rpy="${body_to_joint_rpy}" xyz="${body_to_joint_xyz}"/>
+                <geometry>
+                    <mesh filename="${meshfile}" scale="${scale}"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="${name}_joint" type="continuous">
+            <axis xyz="0 0 1"/>
+            <limit effort="100" velocity="50"/>
+            <parent link="${parent}"/>
+            <child link="${name}"/>
+            <origin rpy="${position_of_joint_from_parent_rpy}" xyz="${position_of_joint_from_parent_xyz}"/>
+        </joint>
+    </xacro:macro>  
+
+    <xacro:macro name="teker_tutucu" params="name position_of_joint_from_parent_rpy position_of_joint_from_parent_xyz mass parent body_to_joint_xyz body_to_joint_rpy donus_acisi">
+        <link name="${name}">
+            <inertial>
+                <mass value="${mass}"/>
+                <origin xyz="0 0 0"/>
+                <inertia ixx="0.01" ixy="0.0" ixz="0.0" iyy="0.01" iyz="0.0" izz="0.01"/> <!-- atalet ağırlığın atalet kısmı-->
+            </inertial>
+            <visual>
+                <origin rpy="${body_to_joint_rpy}" xyz="${body_to_joint_xyz}"/>
+                <geometry>
+                    <box size="0.0001 0.0001 0.0001"/>
+                </geometry>
+            </visual>
+            <collision>
+                <origin rpy="${body_to_joint_rpy}" xyz="${body_to_joint_xyz}"/>
+                <geometry>
+                    <box size="0.0001 0.0001 0.0001"/>
+                </geometry>
+            </collision>
+        </link>
+        <joint name="${name}_joint" type="revolute">
+            <axis xyz="0 0 1"/> <!-- dönme eksenini tanımladık.-->
+            <limit lower="-${donus_acisi}" upper="${donus_acisi}" effort="100" velocity="1.0"/> 
+            <!--limit lower/upper=min/max dönüş açısı.  velocity= o küçük parçanın dönüş hızı. effort= şimdilik gerekli değil-->
+            <parent link="${parent}"/>
+            <child link="${name}"/>
+            <origin rpy="${position_of_joint_from_parent_rpy}" xyz="${position_of_joint_from_parent_xyz}"/> <!-- bu parçanın konumunu belli ediyor.-->
+        </joint>
+    </xacro:macro>
+
+
+</robot>
+<!--hareketsel/fiziksel= inertial
+    görüntü=visual
+    çarpışma özellikleri=collison -->
+
